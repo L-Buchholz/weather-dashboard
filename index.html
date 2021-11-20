@@ -4,8 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <!--Add Bootstrap link here?-->
-    <link rel="stylesheet" href="#" />
+    <!--Add Bootstrap link here: <link rel="stylesheet" href="#" />-->
     <link rel="stylesheet" href="./assets/css/style.css" />
     <title>Weather dashboard</title>
   </head>
@@ -13,17 +12,14 @@
   <body>
     <h2>Weather</h2>
     <div class="container">
-      <div class="row" id="8">
-        <div class="hour col-2">
-          <p>8:00 AM</p>
-        </div>
+      <form class="row" id="city-form">
         <div class="schedule col-8">
-          <textarea></textarea>
+          <textarea name="city"></textarea>
         </div>
         <div class="saveBtn col-2">
-          <button>Save task</button>
+          <button type="submit">Save task</button>
         </div>
-      </div>
+      </form>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
