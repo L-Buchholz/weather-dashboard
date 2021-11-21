@@ -1,16 +1,20 @@
-//*Variables for the following functions
-
-//ENTER HERE
-
 //FUNCTIONS
 //This defines a new function called renderForecast that accepts current weather variables
 function renderCurrent(currentBody) {
+  /*Extrapolating current date using the OpenWeather API, accounting for UTC offset*/
+  var currentDate = currentBody.current.dt + currentBody.timezone_offset;
+  //Sets formatting to UTC using JQuery, accounting for conversion from milliseconds to seconds
+  var localDate = new Date(currentDate * 1000)
+    .toUTCString()
+    .split(" ")
+    .slice(0, 4)
+    .join(" ");
+  $("#current-weather-date").text(localDate);
   var weatherIconUrl = currentBody.current.weather[0].icon;
   //Pulls list of icons from OpenWeatherMap
   var iconCurrent =
     "https://openweathermap.org/img/wn/" + weatherIconUrl + "@2x.png";
   $("#current-weather-icon").attr("src", iconCurrent);
-
   var temp = currentBody.current.temp;
   $("#current-weather-temp").text(temp);
   var humidity = currentBody.current.humidity;
@@ -20,6 +24,28 @@ function renderCurrent(currentBody) {
   //SET UVI ICON TO A SEPARATE CLASS IN CSS
   var uvi = currentBody.current.uvi;
   $("#current-weather-uvi").text(uvi);
+  //If UVI is less than 4, notification is GREEN
+  if (uvi < 4) {
+    $("#current-weather-uvi").css({
+      color: "white",
+      padding: "1px",
+      background: "green",
+    });
+    //If UVI is between 4 and 6, notification is YELLOW
+  } else if (uvi < 6) {
+    $("#current-weather-uvi").css({
+      color: "black",
+      padding: "1px",
+      background: "yellow",
+    });
+    //If UVI is above 6, notification is RED
+  } else {
+    $("#current-weather-uvi").css({
+      color: "white",
+      padding: "1px",
+      background: "red",
+    });
+  }
 }
 //This defines a new function called renderForecast that accepts forecast variables
 function renderForecast(forecastBody) {
@@ -94,7 +120,7 @@ var weather = function (cityName) {
 /*As the above function needs to be defined by the user-generated value (city name) entered into the event 
 handler (below), it is NOT being called independently of it*/
 
-//Event handlers
+//Event handler
 
 $("#city-form").on("submit", saveHandler);
 function saveHandler(event) {
