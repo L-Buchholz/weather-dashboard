@@ -3,6 +3,42 @@
 //ENTER HERE
 
 //FUNCTIONS
+//This defines a new function called renderForecast that accepts current weather variables
+function renderCurrent(currentBody) {
+  var weatherIcon = currentBody.current.weather[0].icon;
+  $("#current-weather-icon").text(weatherIcon);
+  var temp = currentBody.current.temp;
+  $("#current-weather-temp").text(temp);
+  var humidity = currentBody.current.humidity;
+  $("#current-weather-humidity").text(humidity);
+  var wind = currentBody.current.wind_speed;
+  $("#current-weather-wind").text(wind);
+  //SET UVI ICON TO A SEPARATE CLASS IN CSS
+  var uvi = currentBody.current.uvi;
+  $("#current-weather-uvi").text(uvi);
+}
+//This defines a new function called renderForecast that accepts forecast variables
+function renderForecast(forecastBody) {
+  var cityName = forecastBody.city.name;
+  //Using "filter" to set daily forecast based on 12:00 p.m. (noon)
+  var noonTimes = forecastBody.list.filter(function (listItem) {
+    return listItem.dt_txt.includes("12:00");
+  });
+  console.log(noonTimes);
+  //Assigns same function to both list items and HTML index
+  noonTimes.forEach(function (listItem, index) {
+    var date = listItem.dt_txt.split(" ")[0];
+    $("#forecast-date-" + index).text(date);
+    var icon = listItem.weather[0].icon;
+    $("#forecast-icon-" + index).text(icon);
+    var temp = listItem.main.temp;
+    $("#forecast-temp-" + index).text(temp);
+    var humidity = listItem.main.humidity;
+    $("#forecast-humidity-" + index).text(humidity);
+    var wind = listItem.wind.speed;
+    $("#forecast-wind-" + index).text(wind);
+  });
+}
 var weather = function (cityName) {
   //Key: d087fc41244c27da84e39f7fd175d3d7
   //Calls five-day forecast URL using user-generated city name as a variable (defined in event handler)
@@ -20,6 +56,8 @@ var weather = function (cityName) {
     .then(function (bodyFiveDay) {
       //console.log here shows "body" now represents the above [city wx] object in json
       console.log(bodyFiveDay);
+      /*IMPORTANT: This line now calls the above function using the generated five-day forecast info*/
+      renderForecast(bodyFiveDay);
       //Retrieves city latitude coordinates using five day API (not available in current API)
       var lat = bodyFiveDay.city.coord.lat;
       //Retrieves city longitude coordinates using five day API (not available in current API)
@@ -39,13 +77,14 @@ var weather = function (cityName) {
       return responseCurrent.json();
       //console.log here shows retrieval of data for [inserted lat/lon variables] as an object
     })
-    .then(function (bodyCurrent) {
+    .then(function (currentBody) {
       //console.log here shows "body" now represents the [inserted lat/lon variables] object in json
-      console.log(bodyCurrent);
+      console.log(currentBody);
+      renderCurrent(currentBody);
     });
 };
-/*As this function needs to be defined by the user-generated value (city name) entered into the event handler 
-(below), it is NOT being called independently of it*/
+/*As the above function needs to be defined by the user-generated value (city name) entered into the event 
+handler (below), it is NOT being called independently of it*/
 
 //Event handlers
 
@@ -60,17 +99,3 @@ function saveHandler(event) {
   //Pulls weather forecast (function) by user-entered city name
   weather(cityName);
 }
-
-/*
-var hourId = calendarRow.getAttribute("id");
-//Selects the associated button for a given calendar row
-var saveButton = $(calendarRow).find("button");
-//Selects the associated text area for a given calendar row
-var textArea = $(calendarRow).find("textarea");
-var taskText = textArea.val().trim();
-if (saveButton.is(event.target)) {
-  //Save text to localStorage by row (hourId)
-  localStorage.setItem(hourId, taskText);
-}
-}
-*/

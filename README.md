@@ -24,14 +24,12 @@ A traveler requires an interactive weather map that allows them to view the curr
 
 Additionally, there are no errors in the console when it is inspected using Chrome DevTools and the Javascript includes comments.
 
-## UPDATE -- Weather Dashboard webpage
+## Weather Dashboard webpage
 
 The following is a screenshot of the webpage, highlighting its appearance and functionality:
 
-![Interactive weather dashboard. This image includes: DETAILS
-a header entitled "Work Day Scheduler" with a card including the current date; a card separated into rows for all regular business hours; and adjacent columns for the user to enter and save tasks to each of these hours as needed.
-](./assets/images/LINKME)
+![Interactive weather dashboard. This image includes: a header indicating that the page offers an interactive weather dashboard; a form where users can enter a city name; cards that display the relevant weather information (see above) for each city, which is then saved to localStorage and retrievable after a page refresh; and a list of previously-entered cities.](./assets/images/LINKME)
 
-## UPDATE -- Link to deployed application
+## Link to deployed application
 
-The weather dashboard webpage can be found here: LINKME
+The weather dashboard webpage can be found here: https://l-buchholz.github.io/weather-dashboard/

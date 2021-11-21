@@ -15,11 +15,42 @@
       <form class="row" id="city-form">
         <div class="schedule col-8">
           <input type="text" name="city" id="city-name" />
-        </div>
-        <div class="saveBtn col-2">
           <button type="submit">Enter city name</button>
         </div>
       </form>
+      <div class="current-weather">
+        <ul>
+          <!--Connect city with JS-->
+          <li><span id="current-weather-city"></span></li>
+          <!--Connect weather with JS-->
+          <li><span id="current-weather-date"></span></li>
+          <li>[ICON] <span id="current-weather-icon"></span></li>
+          <li>
+            Temperature: <span id="current-weather-temp"></span> Farenheit
+          </li>
+          <li>Humidity: <span id="current-weather-humidity"></span>%</li>
+          <li>Wind speed: <span id="current-weather-wind"></span> mph</li>
+          <li>
+            UV Index [NEED COLOR CLASS]: <span id="current-weather-uvi"></span>
+          </li>
+        </ul>
+      </div>
+      <div class="forecast">
+        <ul>
+          <li><span id="forecast-date-0"></span></li>
+          <li>[ICON] <span id="forecast-icon-0"></span></li>
+          <li>Temperature: <span id="forecast-temp-0"></span> Farenheit</li>
+          <li>Humidity: <span id="forecast-humidity-0"></span>%</li>
+          <li>Wind speed: <span id="forecast-wind-0"></span> mph</li>
+        </ul>
+        <ul>
+          <li><span id="forecast-date-1"></span></li>
+          <li>[ICON] <span id="forecast-icon-1"></span></li>
+          <li>Temperature: <span id="forecast-temp-1"></span> Farenheit</li>
+          <li>Humidity: <span id="forecast-humidity-1"></span>%</li>
+          <li>Wind speed: <span id="forecast-wind-1"></span> mph</li>
+        </ul>
+      </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
