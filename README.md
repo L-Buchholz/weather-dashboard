@@ -20,7 +20,7 @@ A traveler requires an interactive weather map that allows them to view the curr
   - Temperature
   - Wind speed
   - Humidity
-- All form entries (city searches) are saved to localStorage as persistent data so that users can select a specific city from a list after refreshing the page.
+- All form entries (city searches) are saved to localStorage.
 
 Additionally, there are no errors in the console when it is inspected using Chrome DevTools and the Javascript includes comments.
 
@@ -28,7 +28,7 @@ Additionally, there are no errors in the console when it is inspected using Chro
 
 The following is a screenshot of the webpage, highlighting its appearance and functionality:
 
-![Interactive weather dashboard. This image includes: a header indicating that the page offers an interactive weather dashboard; a form where users can enter a city name; cards that display the relevant weather information (see above) for each city, which is then saved to localStorage and retrievable after a page refresh; and a list of previously-entered cities.](./assets/images/LINKME)
+![Interactive weather dashboard. This image includes: a header indicating that the page offers an interactive weather dashboard; a form where users can enter a city name; and cards that display the relevant weather information (see above) for each city, which is then saved to localStorage and retrievable after a page refresh.](./assets/images/screenshot.png)
 
 ## Link to deployed application
 
