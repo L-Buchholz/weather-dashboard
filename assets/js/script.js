@@ -73,6 +73,28 @@ function renderForecast(forecastBody) {
     $("#forecast-wind-" + index).text(wind);
   });
 }
+
+//Saves current weather data to localStorage
+//function saveCurrent() {}
+
+//Saves forecast data to localStorage
+function saveForecast(forecastBody) {
+  //Retrieves all city data from Open Weather and names it a string
+  var cityData = localStorage.getItem("all-data");
+  var storedData = JSON.parse(cityData);
+  //Sets "{}" as an object: default response before user enters ANY data
+  if (storedData == null) {
+    storedData = {};
+  }
+  var cityNameStored = forecastBody.city.name;
+  if (!storedData[cityNameStored]) {
+    //Sets "{}" as an object: default response before user enters specific city name
+    storedData[cityNameStored] = {};
+  }
+  storedData[cityNameStored].forecast = forecastBody;
+  localStorage.setItem("all-data", JSON.stringify(storedData));
+}
+
 var weather = function (cityName) {
   //Key: d087fc41244c27da84e39f7fd175d3d7
   //Calls five-day forecast URL using user-generated city name as a variable (defined in event handler)
@@ -92,6 +114,8 @@ var weather = function (cityName) {
       console.log(bodyFiveDay);
       /*IMPORTANT: This line now calls the above function using the generated five-day forecast info*/
       renderForecast(bodyFiveDay);
+      /*IMPORTANT: This line now saves the generated five-day forecast info to localStorage*/
+      saveForecast(bodyFiveDay);
       //Retrieves city latitude coordinates using five day API (not available in current API)
       var lat = bodyFiveDay.city.coord.lat;
       //Retrieves city longitude coordinates using five day API (not available in current API)
