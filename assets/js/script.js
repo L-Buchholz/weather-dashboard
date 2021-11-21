@@ -5,8 +5,12 @@
 //FUNCTIONS
 //This defines a new function called renderForecast that accepts current weather variables
 function renderCurrent(currentBody) {
-  var weatherIcon = currentBody.current.weather[0].icon;
-  $("#current-weather-icon").text(weatherIcon);
+  var weatherIconUrl = currentBody.current.weather[0].icon;
+  //Pulls list of icons from OpenWeatherMap
+  var iconCurrent =
+    "https://openweathermap.org/img/wn/" + weatherIconUrl + "@2x.png";
+  $("#current-weather-icon").attr("src", iconCurrent);
+
   var temp = currentBody.current.temp;
   $("#current-weather-temp").text(temp);
   var humidity = currentBody.current.humidity;
@@ -20,17 +24,21 @@ function renderCurrent(currentBody) {
 //This defines a new function called renderForecast that accepts forecast variables
 function renderForecast(forecastBody) {
   var cityName = forecastBody.city.name;
-  //Using "filter" to set daily forecast based on 12:00 p.m. (noon)
+  //Sets city name to current weather div, above
+  $("#current-weather-city").text(cityName);
+  //Using "filter" to set daily forecast based on 8:00 p.m. UTC (generally daytime in the US)
   var noonTimes = forecastBody.list.filter(function (listItem) {
-    return listItem.dt_txt.includes("12:00");
+    return listItem.dt_txt.includes("21:00");
   });
   console.log(noonTimes);
   //Assigns same function to both list items and HTML index
   noonTimes.forEach(function (listItem, index) {
     var date = listItem.dt_txt.split(" ")[0];
     $("#forecast-date-" + index).text(date);
-    var icon = listItem.weather[0].icon;
-    $("#forecast-icon-" + index).text(icon);
+    var iconUrl = listItem.weather[0].icon;
+    //Pulls list of icons from OpenWeatherMap
+    var icon = "https://openweathermap.org/img/wn/" + iconUrl + "@2x.png";
+    $("#forecast-icon-" + index).attr("src", icon);
     var temp = listItem.main.temp;
     $("#forecast-temp-" + index).text(temp);
     var humidity = listItem.main.humidity;
