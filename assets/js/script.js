@@ -1,3 +1,7 @@
+//Variables
+//Defines city names using five-day forecast for current forecast (where they are not defined)
+var city;
+
 //FUNCTIONS
 //This defines a new function called renderForecast that accepts current weather variables
 function renderCurrent(currentBody) {
@@ -75,7 +79,21 @@ function renderForecast(forecastBody) {
 }
 
 //Saves current weather data to localStorage
-//function saveCurrent() {}
+function saveCurrent(currentBody) {
+  //Retrieves all city data from Open Weather and names it a string
+  var cityData = localStorage.getItem("all-data");
+  var storedData = JSON.parse(cityData);
+  //Sets "{}" as an object: default response before user enters ANY data
+  if (storedData == null) {
+    storedData = {};
+  }
+  if (!storedData[city]) {
+    //Sets "{}" as an object: default response before user enters specific city name
+    storedData[city] = {};
+  }
+  storedData[city].current = currentBody;
+  localStorage.setItem("all-data", JSON.stringify(storedData));
+}
 
 //Saves forecast data to localStorage
 function saveForecast(forecastBody) {
@@ -121,6 +139,8 @@ var weather = function (cityName) {
       //Retrieves city longitude coordinates using five day API (not available in current API)
       var lon = bodyFiveDay.city.coord.lon;
       //Calls current weather URL using above-defined latitude and longitude coordinates (concatenated as a string variable)
+      //Renames global city variable
+      city = bodyFiveDay.city.name;
       var currentWeatherUrl =
         "https://api.openweathermap.org/data/2.5/onecall?lat=" +
         lat +
@@ -139,6 +159,7 @@ var weather = function (cityName) {
       //console.log here shows "body" now represents the [inserted lat/lon variables] object in json
       console.log(currentBody);
       renderCurrent(currentBody);
+      saveCurrent(currentBody);
     });
 };
 /*As the above function needs to be defined by the user-generated value (city name) entered into the event 
