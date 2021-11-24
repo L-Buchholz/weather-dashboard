@@ -1,7 +1,3 @@
-//Variables
-//Defines city names using five-day forecast for current forecast (where they are not defined)
-var city;
-
 //FUNCTIONS
 //This defines a new function called renderForecast that accepts current weather variables
 function renderCurrent(currentBody) {
@@ -78,42 +74,23 @@ function renderForecast(forecastBody) {
   });
 }
 
-//Saves current weather data to localStorage
-function saveCurrent(currentBody) {
+//Saves city data to localStorage
+function saveCity(cityName) {
   //Retrieves all city data from Open Weather and names it a string
-  var cityData = localStorage.getItem("all-data");
+  var cityData = localStorage.getItem("city-names");
   var storedData = JSON.parse(cityData);
-  //Sets "{}" as an object: default response before user enters ANY data
+  //Sets "[]" as an object: default response before user enters ANY data
   if (storedData == null) {
-    storedData = {};
+    storedData = [];
   }
-  if (!storedData[city]) {
-    //Sets "{}" as an object: default response before user enters specific city name
-    storedData[city] = {};
+  //"unshift" adds new list items to the index[0] position and keeps repeat cities from being added to the list
+  if (!storedData.includes(cityName)) {
+    storedData.unshift(cityName);
+    localStorage.setItem("city-names", JSON.stringify(storedData));
   }
-  storedData[city].current = currentBody;
-  localStorage.setItem("all-data", JSON.stringify(storedData));
 }
 
-//Saves forecast data to localStorage
-function saveForecast(forecastBody) {
-  //Retrieves all city data from Open Weather and names it a string
-  var cityData = localStorage.getItem("all-data");
-  var storedData = JSON.parse(cityData);
-  //Sets "{}" as an object: default response before user enters ANY data
-  if (storedData == null) {
-    storedData = {};
-  }
-  var cityNameStored = forecastBody.city.name;
-  if (!storedData[cityNameStored]) {
-    //Sets "{}" as an object: default response before user enters specific city name
-    storedData[cityNameStored] = {};
-  }
-  storedData[cityNameStored].forecast = forecastBody;
-  localStorage.setItem("all-data", JSON.stringify(storedData));
-}
-
-var weather = function (cityName) {
+var weather = function (cityName, fromButton) {
   //Key: d087fc41244c27da84e39f7fd175d3d7
   //Calls five-day forecast URL using user-generated city name as a variable (defined in event handler)
   var fiveDayForecastUrl =
@@ -132,15 +109,16 @@ var weather = function (cityName) {
       console.log(bodyFiveDay);
       /*IMPORTANT: This line now calls the above function using the generated five-day forecast info*/
       renderForecast(bodyFiveDay);
-      /*IMPORTANT: This line now saves the generated five-day forecast info to localStorage*/
-      saveForecast(bodyFiveDay);
+      /*IMPORTANT: This line now saves the generated city name to localStorage for future searches*/
+      if (!fromButton) {
+        saveCity(bodyFiveDay.city.name);
+        addBtn(bodyFiveDay.city.name);
+      }
       //Retrieves city latitude coordinates using five day API (not available in current API)
       var lat = bodyFiveDay.city.coord.lat;
       //Retrieves city longitude coordinates using five day API (not available in current API)
       var lon = bodyFiveDay.city.coord.lon;
       //Calls current weather URL using above-defined latitude and longitude coordinates (concatenated as a string variable)
-      //Renames global city variable
-      city = bodyFiveDay.city.name;
       var currentWeatherUrl =
         "https://api.openweathermap.org/data/2.5/onecall?lat=" +
         lat +
@@ -159,7 +137,6 @@ var weather = function (cityName) {
       //console.log here shows "body" now represents the [inserted lat/lon variables] object in json
       console.log(currentBody);
       renderCurrent(currentBody);
-      saveCurrent(currentBody);
     });
 };
 /*As the above function needs to be defined by the user-generated value (city name) entered into the event 
@@ -176,5 +153,23 @@ function saveHandler(event) {
   //Checking whether cityName function is associated with different requests
   console.log(cityName);
   //Pulls weather forecast (function) by user-entered city name
-  weather(cityName);
+  weather(cityName, false);
+}
+
+//Adds buttons to recall previous city searches and runs them through "weather" function (defined above)
+function addBtn(cityName) {
+  function handler() {
+    weather(cityName, true);
+  }
+  $("#city-searches").append(
+    $("<button>").append(cityName).on("click", handler)
+  );
+}
+
+//Saves cities from localStorage to list when page is refreshed
+var cityListItems = localStorage.getItem("city-names");
+var storedCities = JSON.parse(cityListItems);
+//Prevents cities from saving as repeat search buttons
+if (storedCities !== null) {
+  storedCities.forEach(addBtn);
 }

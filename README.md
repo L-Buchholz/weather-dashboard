@@ -20,7 +20,7 @@ A traveler requires an interactive weather map that allows them to view the curr
   - Temperature
   - Wind speed
   - Humidity
-- All form entries (city searches) are saved to localStorage.
+- All form entries (city searches) are saved to localStorage and as persistent search buttons, which will provide weather updates for their respective cities when clicked.
 
 Additionally, there are no errors in the console when it is inspected using Chrome DevTools and the Javascript includes comments.
 
