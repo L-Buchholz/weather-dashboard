@@ -1,7 +1,5 @@
 # Weather-Dashboard
 
-## Bootcamp homework #6
-
 A traveler requires an interactive weather map that allows them to view the current conditions and forecast for multiple cities, so that they can plan accordingly for their trip. The following "Acceptance Criteria" for this feature were requested and have now been implemented:
 
 - A weather dashboard with form inputs has been created and connects to the OpenWeather API.
